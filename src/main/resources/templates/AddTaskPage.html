@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Task</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom CSS to set the background color */
+        body {
+            background-color: #444654; /* Replace with your desired color code */
+        }
+
+        /* Custom CSS for the card layout */
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #28A745;
+            border-bottom: none;
+        }
+
+        .card-title {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: #F6F7F9;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        /* Define a class to style the link */
+        .cancel-link {
+            color: white;
+            text-decoration: none; /* Optional, to remove underline if you want */
+        } 
+        
+    </style>
+</head>
+<body>
+
+<!-- Add the success message div at the top of the page -->
+<div id="successMessage" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none; position: fixed; top: 10px; right: 10px; z-index: 9999;">
+    Task added successfully!
+</div>
+
+<!-- Add the form inside a card -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                   <a href="/" class="cancel-link">
+                       <i class="fas fa-chevron-left"></i> Cancel
+                   </a>
+                    <h5 class="card-title text-center">Add New Task</h5>
+                </div>
+                <div class="card-body">
+                    <form id="addTaskForm">
+                        <div class="form-group">
+                            <input type="text" class="form-control form-control-lg" id="taskName" name="taskName" placeholder="Enter Name" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control form-control-lg" id="taskDescription" name="taskDescription" rows="3" placeholder="Enter Description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" class="form-control form-control-lg" id="dueDate" name="dueDate" placeholder="Choose Due Date" required>
+                            <input type="hidden" id="formattedDueDate" name="formattedDueDate">
+                        </div>
+                        <input type="hidden" id="taskStatus" name="taskStatus" value="To Do">
+                        <button type="submit" class="btn btn-success btn-lg btn-block mt-2">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+        $(document).ready(function() {
+            // Add an event listener to the form submission
+            $('#addTaskForm').on('submit', function(event) {
+                event.preventDefault(); // Prevent the form from submitting traditionally
+
+                // Format the date as "yyyy-MM-dd"
+                var rawDueDate = $('#dueDate').val();
+                var formattedDueDate = formatDate(rawDueDate);
+                $('#formattedDueDate').val(formattedDueDate);
+
+                // Get form data
+                var formData = {
+                    taskName: $('#taskName').val(),
+                    taskDescription: $('#taskDescription').val(),
+                    taskDueDate: formattedDueDate,
+                    taskStatus: 'To Do' // Set the status to "To Do" automatically
+                };
+
+                // Send the form data as JSON
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/task',
+                    data: JSON.stringify(formData),
+                    contentType: 'application/json', // Set the content type to JSON
+                    success: function(response) {
+                        // Handle success, for example, display success message and redirect
+                        $('#successMessage').fadeIn(); // Show the success message
+                        setTimeout(function() {
+                            $('#successMessage').fadeOut(); // Hide the success message after 1.5 seconds
+                            window.location.href = '/'; // Redirect to the updated task page
+                        }, 1500); // 1.5 seconds timeout before redirecting
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error, for example, display an error message
+                        console.error('Error adding task: ' + error);
+                    }
+                });
+            });
+        });
+
+    function formatDate(date) {
+        if (!date) {
+            return ''; // Return empty string if the date input is empty
+        }
+
+        var formattedDate = new Date(date);
+        var year = formattedDate.getFullYear();
+        var month = ("0" + (formattedDate.getMonth() + 1)).slice(-2);
+        var day = ("0" + formattedDate.getDate()).slice(-2);
+        return year + "-" + month + "-" + day;
+    }
+</script>
+
+</body>
+</html>
