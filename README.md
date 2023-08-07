@@ -4,14 +4,20 @@ TaskTracker is a comprehensive task management web service meticulously crafted 
 
 Key features of TaskTracker include:
 
--Effortless Task Creation: Seamlessly create new tasks by sending HTTP POST requests to the designated endpoint, providing essential task details such as name, description, and due date.
--Flexible Task Updates: Swiftly update task details or mark tasks as completed using straightforward HTTP PUT requests, allowing for seamless task management.
--Efficient Task Retrieval: Retrieve comprehensive task information and status with ease, utilizing simple HTTP GET requests for streamlined task tracking.
--Seamless Task Deletion: Easily remove tasks from your task list through effortless HTTP DELETE requests, ensuring clutter-free task management.
+i)Effortless Task Creation: Seamlessly create new tasks by sending HTTP POST requests to the designated endpoint, providing essential task details such as name, description, and due date.
+
+ii)Flexible Task Updates: Swiftly update task details or mark tasks as completed using straightforward HTTP PUT requests, allowing for seamless task management.
+
+iii)Efficient Task Retrieval: Retrieve comprehensive task information and status with ease, utilizing simple HTTP GET requests for streamlined task tracking.
+
+iv)Seamless Task Deletion: Easily remove tasks from your task list through effortless HTTP DELETE requests, ensuring clutter-free task management.
 
 TaskTracker is developed using the following technologies:
 
--Programming Language: Java
--Framework: Spring Boot, Thymeleaf
--Database: MySQL
--Tool: Spring Tool Suite 4, Docker
+i)Programming Language: Java
+
+ii)Framework: Spring Boot, Thymeleaf
+
+iii)Database: MySQL
+
+iv)Tool: Spring Tool Suite 4, Docker
